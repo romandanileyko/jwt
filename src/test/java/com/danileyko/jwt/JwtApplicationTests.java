@@ -41,6 +41,16 @@ public class JwtApplicationTests {
                 .andExpect(status().isOk());
     }
     @Test
+    public void authTestForAdminRoleFailed() throws Exception {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken("jack", "123456789"));
+        String token = jwtProvider.generateJwtToken(authentication);
+        assertNotNull(token);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/test/admin")
+                .header("Authorization", "Bearer "+token))
+                .andExpect(status().isForbidden());
+    }
+    @Test
     public void authTestForPmRole() throws Exception {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken("thomas", "123456789"));
