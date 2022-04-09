@@ -1,0 +1,18 @@
+server:
+  port: 8081
+spring:
+  main:
+    web-application-type: servlet
+  datasource:
+    url: jdbc:h2:file:~./demodb
+    username: demo
+    password: demo
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+jwt:
+  app:
+    jwtSecret: secret
+    jwtExpiration: 86400
