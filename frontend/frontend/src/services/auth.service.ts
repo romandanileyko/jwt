@@ -1,12 +1,14 @@
 import axios from "axios";
+import {array} from "yup";
 
 const API_URL = "http://localhost:8081/api/auth/";
 
-export const register = (username: string, email: string, password: string) => {
+export const register = (username: string, email: string, password: string, role: string[]) => {
     return axios.post(API_URL + "signup", {
         username,
         email,
         password,
+        role,
     });
 };
 
