@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Regester";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Routes>
                 <Route path = '/login' element={<Login/>} />
                 <Route path = '/register' element={<Register/>} />
+                <Route path = '/profile' element={<Profile/>} />
             </Routes>
 
         </BrowserRouter>
