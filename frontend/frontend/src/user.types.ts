@@ -5,3 +5,9 @@ export default interface IUser {
     password: string,
     roles?: Array<string>
 }
+export interface IUserInfoResponse {
+   token: string,
+   type: string,
+   username: string,
+   roles?: Array<string>
+}

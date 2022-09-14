@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import {register} from "../services/auth.service";
 import {useDispatch} from "react-redux";
 import {clearMessage} from "../slices/message.slice";
+import {registerThunk} from "../slices/auth.slice";
 
 const Register: React.FC = () => {
     const [successful, setSuccessful] = useState<boolean>(false);
@@ -48,16 +49,19 @@ const Register: React.FC = () => {
             .required("This field is required!"),
     });
 
-    const handleRegister = (formValue: IUser) => {
+    const handleRegister = (formValue: {username: string, email:string, password:string }) => {
         const { username, email, password} = formValue;
         setSuccessful(false);
+        let role:string[] = new Array<string>("admin");
 
-        register(username, email, password, ["admin"]).then(
-            (response) => {
-                setMessage(response.data.message);
+        //@ts-ignore
+        dispatch(registerThunk({username, email, password, role})).unwrap().then(
+            (response: any) => {
+                console.log(response)
+                setMessage(response.message);
                 setSuccessful(true);
             },
-            (error) => {
+            (error: any) => {
                 const resMessage =
                     (error.response &&
                         error.response.data &&

@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {login, logout, register} from "../services/auth.service";
 import {setMessage} from "./message.slice";
 import axios, {AxiosError} from "axios";
-import IUser from "../user.types";
+import IUser, {IUserInfoResponse} from "../user.types";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 type ServerError = { errorMessage: string };
@@ -29,7 +29,7 @@ export const registerThunk = createAsyncThunk<Promise<IUser>, {username: string,
     }
 );
 
-export const loginThunk = createAsyncThunk<Promise<IUser>, {username: string, password: string}>(
+export const loginThunk = createAsyncThunk<IUserInfoResponse, {username: string, password: string}>(
     "auth/login",
     async({username, password}, thunkAPI) => {
         try {
@@ -56,13 +56,13 @@ const authSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [loginThunk.rejected.type]: (state:any, action:PayloadAction<IUser>) => {
+        [loginThunk.rejected.type]: (state:any, action:PayloadAction<IUserInfoResponse>) => {
             state.isLoggedIn = false;
             state.user = null;
         },
-        [loginThunk.fulfilled.type]: (state:any, actionL:PayloadAction<IUser>) => {
+        [loginThunk.fulfilled.type]: (state:any, action:PayloadAction<IUserInfoResponse>) => {
             state.isLoggedIn = false;
-            state.user = actionL.payload;
+            state.user = action.payload;
         },
     },
 });
