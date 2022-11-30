@@ -18,6 +18,7 @@ const Register: React.FC = () => {
 
 
     const initialValues: IUser = {
+        name: "",
         username: "",
         email: "",
         password: ""
@@ -49,13 +50,13 @@ const Register: React.FC = () => {
             .required("This field is required!"),
     });
 
-    const handleRegister = (formValue: {username: string, email:string, password:string }) => {
-        const { username, email, password} = formValue;
+    const handleRegister = (formValue: {name: string, username: string, email:string, password:string }) => {
+        const { name,username, email, password} = formValue;
         setSuccessful(false);
         let role:string[] = new Array<string>("admin");
 
         //@ts-ignore
-        dispatch(registerThunk({username, email, password, role})).unwrap().then(
+        dispatch(registerThunk({name, username, email, password, role})).unwrap().then(
             (response: any) => {
                 console.log(response)
                 setMessage(response.message);
@@ -101,7 +102,15 @@ const Register: React.FC = () => {
                                         className="alert alert-danger"
                                     />
                                 </div>
-
+                                <div className="form-group">
+                                    <label htmlFor="name"> Login </label>
+                                    <Field name="name" type="text" className="form-control" />
+                                    <ErrorMessage
+                                        name="login"
+                                        component="div"
+                                        className="alert alert-danger"
+                                    />
+                                </div>
                                 <div className="form-group">
                                     <label htmlFor="email"> Email </label>
                                     <Field name="email" type="email" className="form-control" />

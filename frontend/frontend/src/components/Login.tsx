@@ -30,7 +30,7 @@ const Login: React.FC = () => {
 
         setLoading(true);
 
-        // @ts-ignore
+         //@ts-ignore
         dispatch(loginThunk({username, password}))
             .unwrap()
             .then(() => {

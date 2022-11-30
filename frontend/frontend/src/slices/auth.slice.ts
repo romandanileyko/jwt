@@ -7,11 +7,11 @@ import IUser, {IUserInfoResponse} from "../user.types";
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 type ServerError = { errorMessage: string };
 
-export const registerThunk = createAsyncThunk<Promise<IUser>, {username: string, email: string, password: string, role: string[]}>(
+export const registerThunk = createAsyncThunk<Promise<IUser>, {name: string, username: string, email: string, password: string, role: string[]}>(
     "auth/register",
-    async ({ username, email, password, role }, thunkAPI) => {
+    async ({ name,username, email, password, role }, thunkAPI) => {
         try {
-            const response = await register(username, email, password, role);
+            const response = await register(name,username, email, password, role);
             thunkAPI.dispatch(setMessage(response.data.message));
             return response.data;
         } catch (error) {
