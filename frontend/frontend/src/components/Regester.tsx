@@ -103,7 +103,7 @@ const Register: React.FC = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="name"> Login </label>
+                                    <label htmlFor="name"> Full Name </label>
                                     <Field name="name" type="text" className="form-control" />
                                     <ErrorMessage
                                         name="login"
