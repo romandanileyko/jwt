@@ -13,20 +13,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "username"
-        }),
-        @UniqueConstraint(columnNames = {
-                "email"
-        })
-})
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
+    @SequenceGenerator(
+            name = "user_seq_gen",
+            sequenceName = "users_id_seq" ,
+            initialValue = 1,
+            allocationSize = 20
+    )
+    @Column(name = "id",updatable = false, nullable = false)
     private Long id;
 
     @NotBlank

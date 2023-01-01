@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {login, logout, register} from "../services/auth.service";
+import {login,logout, register} from "../services/auth.service";
 import {setMessage} from "./message.slice";
 import axios, {AxiosError} from "axios";
 import IUser, {IUserInfoResponse} from "../user.types";
@@ -8,7 +8,7 @@ const user = JSON.parse(localStorage.getItem("user") || "{}");
 type ServerError = { errorMessage: string };
 
 export const registerThunk = createAsyncThunk<Promise<IUser>, {name: string, username: string, email: string, password: string, role: string[]}>(
-    "auth/register",
+    "auth/registerThunk",
     async ({ name,username, email, password, role }, thunkAPI) => {
         try {
             const response = await register(name,username, email, password, role);
@@ -30,7 +30,7 @@ export const registerThunk = createAsyncThunk<Promise<IUser>, {name: string, use
 );
 
 export const loginThunk = createAsyncThunk<IUserInfoResponse, {username: string, password: string}>(
-    "auth/login",
+    "auth/loginThunk",
     async({username, password}, thunkAPI) => {
         try {
             const data = await login(username, password);
@@ -43,9 +43,11 @@ export const loginThunk = createAsyncThunk<IUserInfoResponse, {username: string,
     }
     );
 
-export const logoutThunk = createAsyncThunk("auth/logout", async () => {
+export const logoutThunk = createAsyncThunk<any>(
+    "auth/logoutThunk",
+    async () => {
     await logout();
-});
+    });
 
 const initialState = user
     ? { isLoggedIn: true, user }
@@ -61,8 +63,18 @@ const authSlice = createSlice({
             state.user = null;
         },
         [loginThunk.fulfilled.type]: (state:any, action:PayloadAction<IUserInfoResponse>) => {
-            state.isLoggedIn = false;
+            state.isLoggedIn = true;
             state.user = action.payload;
+        },
+        [registerThunk.fulfilled.type]: (state, action) => {
+            state.isLoggedIn = false;
+        },
+        [registerThunk.rejected.type]: (state, action) => {
+            state.isLoggedIn = false;
+        },
+        [logoutThunk.fulfilled.type]: (state: any, action: any) => {
+            state.isLoggedIn = false;
+            state.user = null;
         },
     },
 });

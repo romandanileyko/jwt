@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -43,6 +44,11 @@ public class AuthRestAPIs {
 
     @Autowired
     JwtProvider jwtProvider;
+
+    @GetMapping("/role")
+    public ResponseEntity<?> gTest() {
+        return new ResponseEntity<List<Role>>(roleRepository.findAll(), HttpStatus.OK);
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {

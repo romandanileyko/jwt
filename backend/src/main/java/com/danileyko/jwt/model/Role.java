@@ -14,7 +14,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq_gen")
+    @SequenceGenerator(name = "role_seq_gen", sequenceName = "roles_id_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)
