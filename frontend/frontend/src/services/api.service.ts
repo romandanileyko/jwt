@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "../slices/headerService";
+import authHeader from "./headerService";
 const API_URL = "http://localhost:8081/api/test/";
 
 export const getUserArea = () => {
