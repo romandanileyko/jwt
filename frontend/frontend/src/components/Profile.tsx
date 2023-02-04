@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const Profile: React.FC = () => {
     const { user: currentUser } = useSelector((state:any) => state.auth);
+
     let navigate = useNavigate();
 
     if (!currentUser) {

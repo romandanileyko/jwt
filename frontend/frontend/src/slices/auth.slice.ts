@@ -1,10 +1,11 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {login,logout, register} from "../services/auth.service";
+import {login, logout, register} from "../services/auth.service";
 import {setMessage} from "./message.slice";
 import axios, {AxiosError} from "axios";
 import IUser, {IUserInfoResponse} from "../user.types";
 
-const user = JSON.parse(localStorage.getItem("user") || "{}");
+const userJson = localStorage.getItem("user");
+const currentUser = userJson !== null ? JSON.parse(userJson) : {} as IUser;
 type ServerError = { errorMessage: string };
 
 export const registerThunk = createAsyncThunk<Promise<IUser>, {name: string, username: string, email: string, password: string, role: string[]}>(
@@ -33,8 +34,7 @@ export const loginThunk = createAsyncThunk<IUserInfoResponse, {username: string,
     "auth/loginThunk",
     async({username, password}, thunkAPI) => {
         try {
-            const data = await login(username, password);
-            return data;
+            return await login(username, password);
         } catch (error) {
             const message = "Login Error Handle!"
             thunkAPI.dispatch(setMessage(message))
@@ -49,9 +49,9 @@ export const logoutThunk = createAsyncThunk<any>(
     await logout();
     });
 
-const initialState = user
-    ? { isLoggedIn: true, user }
-    : { isLoggedIn: false, user: null };
+const initialState = currentUser
+    ? { isLoggedIn: true, user: currentUser, test: "inti" }
+    : { isLoggedIn: false, user: null, test: "init" };
 
 const authSlice = createSlice({
     name: "auth",
@@ -63,8 +63,13 @@ const authSlice = createSlice({
             state.user = null;
         },
         [loginThunk.fulfilled.type]: (state:any, action:PayloadAction<IUserInfoResponse>) => {
-            state.isLoggedIn = true;
-            state.user = action.payload;
+            localStorage.setItem("user", JSON.stringify(action.payload));
+           return {
+               ...state,
+               isLoggedIn: true,
+               user: action.payload,
+               test: "login"
+           }
         },
         [registerThunk.fulfilled.type]: (state, action) => {
             state.isLoggedIn = false;
@@ -72,9 +77,16 @@ const authSlice = createSlice({
         [registerThunk.rejected.type]: (state, action) => {
             state.isLoggedIn = false;
         },
-        [logoutThunk.fulfilled.type]: (state: any, action: any) => {
+        [logoutThunk.fulfilled.type]: (state,action) => {
+            localStorage.removeItem("user");
             state.isLoggedIn = false;
-            state.user = null;
+            state.test = "logout";
+            state.user = {} as IUser;
+            console.log(JSON.stringify(state));
+            return {
+                ...state,
+                ...action.payload
+            }
         },
     },
 });

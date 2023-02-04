@@ -5,35 +5,23 @@ import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Regester";
 import Profile from "./components/Profile";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "./services/auth.service";
-import EventBus from "./common/EventBus";
-import {loginThunk, logoutThunk} from "./slices/auth.slice";
+import {useDispatch, useSelector, useStore} from "react-redux";
+import {logoutThunk} from "./slices/auth.slice";
+import {AppDispatch, RootState, useAppDispatch, useAppSelector} from "./store";
+import AdminPage from "./components/AdminPage";
 
 function App() {
-    const dispatch = useDispatch<any>();
-    const {user: currentUser} = useSelector((state:any) => state.auth)
-    const logOut = useCallback(() => {
+    const dispatch = useAppDispatch();
+    let {user: currentUser} = useSelector((state:any) => state.auth);
+    let {isLoggedIn: isLoggedIn} = useAppSelector((state:RootState) => state.auth);
+
+    const logOut = () => {
         dispatch(logoutThunk());
-    }, [dispatch]);
+    };
 
-    useEffect(() => {
-        EventBus.on("logout", () => {
-            logOut();
-        });
-        return () => {
-            EventBus.remove("logout", () =>{});
-        };
-    }, [logOut]);
-
-    // useEffect(() => {
-    //     EventBus.on("logout", () => {
-    //         logOut();
-    //     });
-    //     return () => {
-    //         EventBus.remove("logout", () => {});
-    //     };
-    // },[logOut]);
+    const showState = () => {
+        alert(isLoggedIn)
+    }
 
     return (
         <BrowserRouter>
@@ -48,6 +36,9 @@ function App() {
                     <li>
                         {Object.keys(currentUser).length !== 0 && <a href="/login" className="nav-item" onClick={logOut}>LogOut</a>}
                     </li>
+                    <li>
+                       <Link to={"/admin"}>AdminPage</Link>
+                    </li>
                 </div>
             </nav>
 
@@ -55,6 +46,7 @@ function App() {
                 <Route path = '/login' element={<Login/>} />
                 <Route path = '/register' element={<Register/>} />
                 <Route path = '/profile' element={<Profile/>} />
+                <Route path = '/admin' element={<AdminPage/>} />
             </Routes>
 
         </BrowserRouter>

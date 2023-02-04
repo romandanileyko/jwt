@@ -12,3 +12,8 @@ export interface IUserInfoResponse {
    username: string,
    roles?: Array<string>
 }
+
+export interface stateType{
+    isLoggedIn: boolean,
+    user?: IUser
+}

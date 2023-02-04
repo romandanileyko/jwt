@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import {loginThunk} from "../slices/auth.slice";
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
+import {useAppDispatch} from "../store";
 
 const Login: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const {isLoggedIn} = useSelector((state:any) => state.auth)
+    const {isLoggedIn: isLoggedIn} = useSelector((state:any) => state.auth);
     const { message} = useSelector((state: any) => state.message);
     let navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const initialValues: {
         username: string;
@@ -35,7 +36,6 @@ const Login: React.FC = () => {
             .unwrap()
             .then(() => {
                 navigate("/profile")
-                window.location.reload();
             })
             .catch(() => {
                 setLoading(false);
