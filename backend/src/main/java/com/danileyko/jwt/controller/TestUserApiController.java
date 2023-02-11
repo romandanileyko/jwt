@@ -25,8 +25,6 @@ public class TestUserApiController {
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminAccess() {
-        int i = 4;
-        double i1 = i + Math.pow(i,2);
-        return ">>> Admin Contents" + i1;
+        return ">>> Admin Contents";
     }
 }
