@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: books-authors-step-1
+      author: romandanileyko
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: books_author_pkey
+                  name: book_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: books_author_pkey
+                  name: author_id
+                  type: BIGINT
+            tableName: books_authors
+  - changeSet:
+      id: books-authors-step-2
+      author: romandanileyko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: books_authors
+            constraintName: fk_books_authors_to_book_id
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: book
+            validate: true
+  - changeSet:
+      id: books-authors-step-3
+      author: romandanileyko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: books_authors
+            constraintName: fk_books_authors_to_author_id
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: author
+            validate: true

@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: book-step-1
+      author: romandanileyko
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: book_id
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(250)
+              - column:
+                  name: isbn
+                  type: int
+              - column:
+                  name: total_pages
+                  type: int
+              - column:
+                  name: pablished_date
+                  type: date
+            tableName: book

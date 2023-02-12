@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: author-step-1
+      author: romandanileyko
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: author_id
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: first_name
+                  type: VARCHAR(250)
+              - column:
+                  name: last_name
+                  type: VARCHAR(250)
+              - column:
+                  name: birth_date
+                  type: date
+            tableName: author

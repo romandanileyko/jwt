@@ -1,3 +1,9 @@
 databaseChangeLog:
   - include:
     - file: db/changelog/db.changelog-init.yaml
+  - include:
+    - file: db/changelog/db.changelog-book.yaml
+  - include:
+    - file: db/changelog/db.changelog-author.yaml
+  - include:
+      - file: db/changelog/db.changelog-books-authors.yaml
