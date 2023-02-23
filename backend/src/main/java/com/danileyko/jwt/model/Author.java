@@ -22,7 +22,7 @@ public class Author {
             name = "author_seq_gen",
             sequenceName = "author_id_seq" ,
             initialValue = 1,
-            allocationSize = 20
+            allocationSize = 1
     )
     private Long id;
     @Column(name = "first_name")
