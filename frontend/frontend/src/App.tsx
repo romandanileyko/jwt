@@ -9,6 +9,7 @@ import {useDispatch, useSelector, useStore} from "react-redux";
 import {logoutThunk} from "./slices/auth.slice";
 import {AppDispatch, RootState, useAppDispatch, useAppSelector} from "./store";
 import AdminPage from "./components/AdminPage";
+import BookPage from "./components/BookPage";
 
 function App() {
     const dispatch = useAppDispatch();
@@ -39,6 +40,9 @@ function App() {
                     <li>
                        <Link to={"/admin"}>AdminPage</Link>
                     </li>
+                    <li>
+                        <Link to={"/book"}>BookPage</Link>
+                    </li>
                 </div>
             </nav>
 
@@ -47,6 +51,7 @@ function App() {
                 <Route path = '/register' element={<Register/>} />
                 <Route path = '/profile' element={<Profile/>} />
                 <Route path = '/admin' element={<AdminPage/>} />
+                <Route path = '/book' element={<BookPage/>} />
             </Routes>
 
         </BrowserRouter>
