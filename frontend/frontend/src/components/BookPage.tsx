@@ -1,15 +1,40 @@
 import {useDeleteBookByIdMutation, useGetAllBooksQuery} from "../api/book.api";
 import {ColumnsType} from "antd/es/table";
 import {IBook} from "../user.types";
-import {Table} from "antd";
+import {Button, DatePicker, Form, Input, Modal, Select, Table} from "antd";
+import React, {useState} from "react";
+import {CreateBook} from "./CreateBook";
+import {Selector} from "react-redux";
 
 const BookPage = () => {
     const {isLoading, isError, data} = useGetAllBooksQuery();
     const [deleteBook] = useDeleteBookByIdMutation();
+    const [open, setOpen] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [form] = Form.useForm();
 
     const deleteHeandler = async (event: React.MouseEvent<HTMLAnchorElement>, record: IBook) => {
         await deleteBook(record.id).unwrap();
     };
+
+    const showModal = () => {
+        setOpen(true);
+    };
+
+    const handleOk = () => {
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setOpen(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+
+    const handleCancel = () => {
+        console.log("submit")
+        setOpen(false);
+    };
+
+
 
     const columns: ColumnsType<IBook> = [
         {
@@ -60,12 +85,28 @@ const BookPage = () => {
     ];
 
     return (
-        <Table
-            rowKey={(_) => _.id}
-            columns={columns}
-            dataSource={data}
-            loading={isLoading}
-        />
+        <>
+            <div>
+                <Button  type="primary" onClick={showModal}>New Record</Button>
+            </div>
+            <Modal
+                title="Create New Record"
+                open={open}
+                onOk={handleOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+                footer={[]}
+            >
+               <CreateBook/>
+            </Modal>
+            <Table
+                rowKey={(_) => _.id}
+                columns={columns}
+                dataSource={data}
+                loading={isLoading}
+            />
+        </>
+
     )
 }
 export default BookPage;

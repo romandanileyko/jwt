@@ -3,16 +3,20 @@ import authReducer from "./slices/auth.slice";
 import messageReducer from "./slices/message.slice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {bookApi} from "./api/book.api";
+import {authorApi} from "./api/author.api";
 
 const reducer = {
     auth: authReducer,
     message: messageReducer,
-    [bookApi.reducerPath]: bookApi.reducer
+    [bookApi.reducerPath]: bookApi.reducer,
+    [authorApi.reducerPath]: authorApi.reducer
 }
 
 const store = configureStore({
     reducer: reducer,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(bookApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware()
+        .concat(bookApi.middleware)
+        .concat(authorApi.middleware),
     devTools: true,
 })
 export type RootState = ReturnType<typeof store.getState>
