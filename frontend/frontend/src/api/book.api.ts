@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {IBook} from "../user.types";
+import {IBook, IBookOut} from "../user.types";
 import * as url from "url";
 
 export const bookApi = createApi({
@@ -23,6 +23,14 @@ export const bookApi = createApi({
                     :
                     [{ type: 'Books', id: 'LIST' }]
         }),
+        addBook: build.mutation<IBook, IBookOut>({
+            query: (body) => ({
+                url: '',
+                method: 'POST',
+                body
+            }),
+            invalidatesTags:  [{ type: 'Books', id: 'LIST'}]
+        }),
         deleteBookById: build.mutation<{ success: boolean; id: number }, number>({
             query:(id:number) => ({
                 url: `/${id}`,
@@ -33,4 +41,4 @@ export const bookApi = createApi({
     })
 })
 
-export const {useGetAllBooksQuery, useDeleteBookByIdMutation} = bookApi
+export const {useGetAllBooksQuery, useDeleteBookByIdMutation, useAddBookMutation} = bookApi

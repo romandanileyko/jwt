@@ -1,13 +1,25 @@
 import React from "react";
 import {Button, DatePicker, Form, Input, Select} from "antd";
 import {useGetAllAuthorsQuery} from "../api/author.api";
+import {IAuthor, IBook, IBookOut} from "../user.types";
+import {useAddBookMutation} from "../api/book.api";
 
 export const CreateBook: React.FC = () => {
     const [form] = Form.useForm();
     const {isLoading, isError, data} = useGetAllAuthorsQuery();
-    const handleForm = (values:any) => {
-        console.log(values)
+    const [addBook] = useAddBookMutation();
 
+    const handleForm = (values:any) => {
+        const author:IAuthor = data?.find(author => author.id === values.authors)!;
+        const book: IBookOut = {
+            title: values.title,
+            isbn: values.isbn,
+            totalPages: values.total,
+            pablishedDate: values.pdate,
+            authors: Array.of(author)
+        };
+        console.log(book)
+        addBook(book);
     }
 
     const onReset = () => {
@@ -60,7 +72,7 @@ export const CreateBook: React.FC = () => {
                     data?.map(({id, firstName, lastName}) => {
                         let fullName = firstName.concat(" ").concat(lastName);
                         return (
-                            <Select.Option id={id} value={fullName}>{fullName}</Select.Option>
+                            <Select.Option id={id} value={id}>{fullName}</Select.Option>
                         )
                     })
                 }

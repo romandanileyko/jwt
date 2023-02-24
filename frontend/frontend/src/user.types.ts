@@ -30,9 +30,17 @@ export interface IAuthor {
 export interface IBook {
     id: number,
     title: string,
-    isbn: number,
-    totalPages: number,
+    isbn?: number,
+    totalPages?: number,
     pablishedDate: Date,
     authors: IAuthor[]
+}
+
+export interface IBookOut {
+    title: string,
+    isbn?: number,
+    totalPages?: number,
+    pablishedDate: Date,
+    authors: IAuthor[] | undefined
 }
 
