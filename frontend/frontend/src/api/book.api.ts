@@ -1,11 +1,19 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {IBook, IBookOut} from "../user.types";
-import * as url from "url";
+import {RootState} from "../store";
 
 export const bookApi = createApi({
     reducerPath: 'book',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8081/api/book'
+        baseUrl: 'http://localhost:8081/api/book',
+        prepareHeaders: (headers, { getState }) => {
+            const auth = (getState() as RootState).auth;
+            if (auth && auth.user) {
+                const token = auth.user.token;
+                headers.set('authorization', `Bearer ${token}`)
+            }
+            return headers;
+        }
     }),
     tagTypes:['Books'],
     endpoints: build =>  ({
